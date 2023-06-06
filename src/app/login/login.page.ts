@@ -38,6 +38,7 @@ export class LoginPage implements OnInit {
 
     let usuario = formularioData.usuario
     let password = formularioData.password
+
     let IDApp = 105
 
     this.loginService.ingresar(IDApp, usuario, password)
