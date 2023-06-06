@@ -48,10 +48,10 @@ export class LoginPage implements OnInit {
         let test = response
         let state: string = response
         if (Number(state) != 1) {
-
+          this.navCtrl.navigateRoot('menu')
         }
         else {
-          this.navCtrl.navigateRoot('menu')
+
         }
 
 
