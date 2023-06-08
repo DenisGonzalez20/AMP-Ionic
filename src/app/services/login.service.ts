@@ -30,7 +30,7 @@ export class LoginService {
       params: parametros
     };
 
-    return this.http.get(url, options);
+    return this.http.get<any[]>(url, options);
   }
 
   ObtenerMenu() {
