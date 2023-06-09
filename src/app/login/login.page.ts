@@ -9,18 +9,10 @@ import {
 import { AlertController, NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
+import { Respuesta } from './models/respuesta.model';
+import { UserService } from '../services/user.service';
+import { Usuario } from './models/usuario.model';
 
-interface Usuario {
-  fiAccesoAutorizado: number;
-  fiIDUsuario: number;
-  fcMensaje: string;
-  fcNombreCorto: string;
-  fiIDEquipo: number;
-  fiIDSesion: number;
-  fcPuesto: string | null;
-  fiEsSupervisor: number;
-  fcCorreoElectronico: string;
-}
 interface ResponseData {
   request: {
     state: string
@@ -41,7 +33,7 @@ export class LoginPage implements OnInit {
   usuarios: Usuario[] = [];
   formularioLogin: FormGroup;
   constructor(public fb: FormBuilder, private loginService: LoginService, public alertController: AlertController,
-    public navCtrl: NavController) {
+    public navCtrl: NavController, private userService: UserService) {
     this.formularioLogin = this.fb.group({
       'usuario': new FormControl("", Validators.required),
       'password': new FormControl("", Validators.required)
@@ -50,7 +42,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
   }
-  datos: any = []
+
   async ingresar() {
 
     var formularioData = this.formularioLogin.value;
@@ -58,20 +50,33 @@ export class LoginPage implements OnInit {
     let usuario = formularioData.usuario
     let password = formularioData.password
 
-    let IDApp = 105
-    const loginObservable: Observable<any[]> = this.loginService.
+    const IDApp: number = 105
+    const loginObservable: Observable<Respuesta> = this.loginService.
       ingresar(IDApp, usuario, password)
 
     loginObservable.subscribe(
-      (response: any[]) => {
-        debugger
-        const request = response[0]
-        console.log(request.state)
+      (response: Respuesta) => {
+        let AccesoAutorizado: number = response.request[0].result[0].fiAccesoAutorizado
+
+        if (AccesoAutorizado == 1) {
+
+          this.userService.IdUsuario = response.request[0].result[0].fiIDUsuario
+          this.userService.IdApp = IDApp
+          this.userService.IdSesion = response.request[0].result[0].fiIDSesion
+
+          this.navCtrl.navigateRoot('menu')
+        }
+        else {
+          alert("negativo")
+        }
       }
 
 
 
     )
+
+
+    //array=[url:"url",nombre:"youtube"]
 
     // this.loginService.ingresar(IDApp, usuario, password)
     //   .subscribe(response => {
@@ -92,6 +97,8 @@ export class LoginPage implements OnInit {
     //   }, (error) => {
     //     console.error(error)
     //   })
+
+
 
 
   }

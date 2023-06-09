@@ -1,19 +1,34 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>menu</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-
-
-
-
-  <iframe
-    src="http://190.92.45.108/CoreMovil/Estimaciones/PreciosdeMercadoVehiculos.aspx?6JN7YKswhCB6O8BvNbOZvDuMY6dq9f+iyS2MolkOKrc="
-    style="width: 100%; height: 100%" scrolling="yes"></iframe>
-
+<ion-app>
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="tertiary">
+        <ion-title>Menu Content</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item *ngFor="let menuItem of menuItems" (click)="openMenuItem(menuItem.fcURL)">
+          {{ menuItem.fcTituloVentana }}
+        </ion-item>
+      </ion-list>
 
 
 
-</ion-content>
+    </ion-content>
+  </ion-menu>
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="">
+      <iframe *ngIf="selectedUrl" [src]="selectedUrl" style="width: 100%; height: 100%;"></iframe>
+
+
+    </ion-content>
+  </div>
+</ion-app>

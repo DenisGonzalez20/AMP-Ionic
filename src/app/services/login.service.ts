@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Md5 } from 'ts-md5';
 import { environment } from 'src/environments/environment';
+import { Respuesta } from '../login/models/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class LoginService {
       params: parametros
     };
 
-    return this.http.get<any[]>(url, options);
+    return this.http.get<Respuesta>(url, options);
   }
 
   ObtenerMenu() {
