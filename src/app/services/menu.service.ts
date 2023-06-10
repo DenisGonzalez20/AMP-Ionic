@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { menuRespuesta } from '../menu/models/menu.model';
 import { DetalleRespuesta } from '../menu/models/detalle-respuesta-menu.model';
+import { IMenu } from '../menu/models/menu-respuesta.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class MenuService {
       params: parametros
     };
 
-    return this.http.get<Array<DetalleRespuesta>>(url, options);
+    return this.http.get<IMenu>(url, options);
   }
 
 
