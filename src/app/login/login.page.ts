@@ -6,12 +6,13 @@ import {
   Validators,
   FormBuilder
 } from "@angular/forms"
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, MenuController, NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { Respuesta } from './models/respuesta.model';
 import { UserService } from '../services/user.service';
 import { Usuario } from './models/usuario.model';
+import { MenuPage } from '../menu/menu.page';
 
 interface ResponseData {
   request: {
@@ -33,7 +34,8 @@ export class LoginPage implements OnInit {
   usuarios: Usuario[] = [];
   formularioLogin: FormGroup;
   constructor(public fb: FormBuilder, private loginService: LoginService, public alertController: AlertController,
-    public navCtrl: NavController, private userService: UserService) {
+    public navCtrl: NavController, private userService: UserService,
+    private loadingCtrl: LoadingController) {
     this.formularioLogin = this.fb.group({
       'usuario': new FormControl("", Validators.required),
       'password': new FormControl("", Validators.required)
@@ -49,13 +51,20 @@ export class LoginPage implements OnInit {
 
     let usuario = formularioData.usuario
     let password = formularioData.password
-
+    const messageAlert: string = 'Cargando...'
     const IDApp: number = 105
+    const loading = await this.loadingCtrl.create({
+      message: messageAlert,
+
+    })
+    loading.present()
     const loginObservable: Observable<Respuesta> = this.loginService.
       ingresar(IDApp, usuario, password)
 
     loginObservable.subscribe(
       (response: Respuesta) => {
+
+
         let AccesoAutorizado: number = response.request[0].result[0].fiAccesoAutorizado
 
         if (AccesoAutorizado == 1) {
@@ -65,11 +74,15 @@ export class LoginPage implements OnInit {
           this.userService.IdSesion = response.request[0].result[0].fiIDSesion
 
           this.navCtrl.navigateRoot('menu')
+
         }
         else {
           alert("negativo")
         }
+        loading.dismiss()
+
       }
+
 
 
 
