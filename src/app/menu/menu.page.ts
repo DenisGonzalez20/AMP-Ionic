@@ -6,7 +6,7 @@ import { UserService } from '../services/user.service';
 import { Observable } from 'rxjs';
 import { DetalleRespuesta } from './models/detalle-respuesta-menu.model';
 import { IMenu } from './models/menu-respuesta.model';
-import { LoadingController, NavController } from '@ionic/angular';
+import { LoadingController, MenuController, NavController } from '@ionic/angular';
 import { ViewChild, ElementRef } from '@angular/core';
 
 interface MenuItem {
@@ -20,8 +20,9 @@ interface MenuItem {
 })
 
 export class MenuPage implements OnInit {
+  selectedUrlString: string = ''
   selectedUrl: SafeResourceUrl = ''
-
+  tituloVentana: string = ''
 
   // menuItems: MenuItem[] = [
   //   { name: 'Elemento 1', url: 'https://miprestadito.com' },
@@ -34,14 +35,15 @@ export class MenuPage implements OnInit {
   //   iframe.contentWindow.location.reload();
   // }
 
-  openMenuItem(url: string) {
-
-    // Implementa la lógica para abrir la URL o realizar otra acción
+  openMenuItem(url: string, tituloVentana: string) {
 
     this.selectedUrl = this.dom.bypassSecurityTrustResourceUrl(url)
+    this.tituloVentana = tituloVentana
+    this.menu.close()
   }
   constructor(private dom: DomSanitizer,
-    private menuservice: MenuService, private userService: UserService, public navCtrl: NavController) {
+    private menuservice: MenuService, private userService: UserService,
+    public navCtrl: NavController, private menu: MenuController) {
     this.obtenerMenu()
   }
 
@@ -57,8 +59,9 @@ export class MenuPage implements OnInit {
       (response: IMenu) => {
         var MenuItemsRespuesta: Array<menuRespuesta> = response.request[0].result
         this.menuItems = MenuItemsRespuesta;
+        this.tituloVentana = MenuItemsRespuesta[0].fcTituloVentana
         this.selectedUrl = this.dom.bypassSecurityTrustResourceUrl(MenuItemsRespuesta[0].fcURL)
-
+        this.selectedUrlString = MenuItemsRespuesta[0].fcURL
 
       }
 
@@ -68,12 +71,10 @@ export class MenuPage implements OnInit {
   }
   async Logout() {
     this.navCtrl.navigateRoot('login')
+    this.userService.IdApp = 0
+    this.userService.IdSesion = 0
+    this.userService.IdUsuario = 0
   }
-  async Refresh(url: string) {
-
+  async Refresh() {
   }
-  async StopLoading(loadingCrtl: LoadingController) {
-    loadingCrtl.dismiss()
-  }
-
 }

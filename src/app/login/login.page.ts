@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
   formularioLogin: FormGroup;
   constructor(public fb: FormBuilder, private loginService: LoginService, public alertController: AlertController,
     public navCtrl: NavController, private userService: UserService,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController, private alertCrtl: AlertController) {
     this.formularioLogin = this.fb.group({
       'usuario': new FormControl("", Validators.required),
       'password': new FormControl("", Validators.required)
@@ -57,10 +57,15 @@ export class LoginPage implements OnInit {
       message: messageAlert,
 
     })
-    loading.present()
+    const alert = await this.alertController.create({
+      header: 'Acceso denegado',
+      message: 'Usuario y/o contraseña incorrecta',
+      buttons: ['OK']
+    })
+
     const loginObservable: Observable<Respuesta> = this.loginService.
       ingresar(IDApp, usuario, password)
-
+    loading.present()
     loginObservable.subscribe(
       (response: Respuesta) => {
 
@@ -68,18 +73,18 @@ export class LoginPage implements OnInit {
         let AccesoAutorizado: number = response.request[0].result[0].fiAccesoAutorizado
 
         if (AccesoAutorizado == 1) {
-
           this.userService.IdUsuario = response.request[0].result[0].fiIDUsuario
           this.userService.IdApp = IDApp
           this.userService.IdSesion = response.request[0].result[0].fiIDSesion
-
           this.navCtrl.navigateRoot('menu')
+          loading.dismiss()
 
         }
         else {
-          alert("negativo")
+          loading.dismiss()
+          alert.present()
         }
-        loading.dismiss()
+
 
       }
 

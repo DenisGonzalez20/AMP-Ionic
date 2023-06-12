@@ -2,12 +2,24 @@
   <ion-menu contentId="main-content">
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>AMP</ion-title>
+        <ion-row>
+          <ion-col>
+            <div style="text-align: center;">
+              <ion-img style="width: 40px;height: 35px;display: block;margin: auto;"
+                src="assets/icon/logo.png"></ion-img>
+
+            </div>
+
+          </ion-col>
+
+        </ion-row>
+
+
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
       <ion-list>
-        <ion-item *ngFor="let menuItem of menuItems" (click)="openMenuItem(menuItem.fcURL)">
+        <ion-item *ngFor="let menuItem of menuItems" (click)="openMenuItem(menuItem.fcURL,menuItem.fcTituloVentana)">
           {{ menuItem.fcTituloVentana }}
         </ion-item>
       </ion-list>
@@ -17,19 +29,25 @@
     </ion-content>
   </ion-menu>
   <div class="ion-page" id="main-content">
-    <ion-header  >
+    <ion-header>
       <ion-toolbar color="primary">
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-grid>
           <ion-row>
-            <ion-col size="6"></ion-col>
-            <ion-col size="4"></ion-col>
-            <ion-col size="2"> <ion-icon name="reload-outline" class="ion-padding-start"></ion-icon><ion-icon class="ion-padding-end" (click)="Logout()"  name="exit-outline"></ion-icon></ion-col>
+
+            <ion-col size="11">{{tituloVentana}}</ion-col>
+            <!-- <ion-col size="1">
+              <ion-icon (click)="Refresh()" name="reload-outline" class="">
+              </ion-icon>
+            </ion-col> -->
+            <ion-col size="1">
+              <ion-icon class="" (click)="Logout()" name="exit-outline"></ion-icon>
+            </ion-col>
           </ion-row>
         </ion-grid>
-       
+
       </ion-toolbar>
     </ion-header>
     <ion-content class="">

@@ -5,10 +5,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-row justify-content-center aling-items-center>
+    <ion-col>
+      <div style="text-align: center;">
+        <ion-img style="width: 90px;height: 190px;display: block;margin: auto;" src="assets/icon/logo.png"></ion-img>
+      </div>
+    </ion-col>
+  </ion-row>
 
-  <div style="text-align: center;margin: auto;display: block;padding-left: 47%;">
-    <ion-img style="width: 70px;height: 190px;text-align: center;" src="assets/icon/logo.png"></ion-img>
-  </div>
   <ion-card style="text-align: center;">
     <ion-card-header>
 
@@ -18,17 +22,19 @@
       <form [formGroup]="formularioLogin">
 
         <ion-item>
+          <ion-icon name="person-outline" color="primary"></ion-icon>
           <ion-label>
             Usuario
           </ion-label>
-          <br>
+
           <ion-input formControlName="usuario" type="text">
 
           </ion-input>
         </ion-item>
         <ion-item>
+          <ion-icon name="key-outline" color="primary"></ion-icon>
           <ion-label>
-            Password
+            Contraseña
           </ion-label>
           <br>
           <ion-input formControlName="password" type="password">
@@ -36,6 +42,7 @@
           </ion-input>
         </ion-item>
       </form>
+      <br>
       <ion-button color="primary" (click)="ingresar()">
         INGRESAR
       </ion-button>

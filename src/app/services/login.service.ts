@@ -14,7 +14,7 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   ingresar(IDApp: number, usuario: string, clave: string) {
-    debugger
+
     const passwordHash = Md5.hashStr(clave).toString(); // Encriptar la contraseña a MD5
 
     const url = `${this._url}/APIsMoviles/APPAMP/api.php`;

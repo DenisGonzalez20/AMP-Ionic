@@ -14,7 +14,7 @@ export class MenuService {
   constructor(private http: HttpClient) { }
 
   obtenerMenu(IDApp: number, IDusuario: number, IDSesion: number) {
-    debugger
+
 
     const url = `${this._url}/APIsMoviles/APPAMP/api.php`;
 

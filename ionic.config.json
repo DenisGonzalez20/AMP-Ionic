@@ -1,5 +1,7 @@
 {
   "name": "AMP",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
